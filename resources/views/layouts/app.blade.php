@@ -40,7 +40,13 @@
         .col-form-label {
             color: white;
         }
+
+        .blur {
+            filter: blur(8px);
+            -webkit-filter: blur(8px);
+        }
     </style>
+    @yield('js')
 </head>
 <body>
 <div id="app">
@@ -61,7 +67,8 @@
                     @guest
                     @else
                         <li class="nav-item">
-                            <a class="nav-link @if(route('home') === \Illuminate\Support\Facades\Request::url()) active @endif" href="{{ route('home') }}">Dashboard</a>
+                            <a class="nav-link @if(route('home') === \Illuminate\Support\Facades\Request::url()) active @endif"
+                               href="{{ route('home') }}">Dashboard</a>
                         </li>
                     @endif
                 </ul>
@@ -90,7 +97,7 @@
                                aria-expanded="false">
                                 <span style="margin-right: 1em"
                                       class="text-white-50">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>
-                                <img src="https://avatars.githubusercontent.com/u/33786132?s=40&v=4"
+                                <img src="{{asset('storage/'.auth()->user()->avatar)}}"
                                      class="rounded-circle" height="25" alt="Black and White Portrait of a Man"
                                      loading="lazy"/>
                             </a>
@@ -99,16 +106,14 @@
                                     aria-labelledby="navbarDropdownMenuAvatar"
                             >
                                 <li>
-                                    <a class="dropdown-item" href="#">My profile</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="#">Settings</a>
+                                    <a class="dropdown-item" href="{{route('profile')}}"><i class="fas fa-user"></i> {{__('Profil')}}</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        <i class="fas fa-sign-out"></i>
+                                        {{ __('Abmelden') }}
                                     </a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
