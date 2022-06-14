@@ -16,6 +16,7 @@ class ProfileController extends Controller
     public function saveProfile(Request $request)
     {
         $user = auth()->user();
+        Storage::delete('public/' . $user->avatar);
         if (($path = $request->file('avatar')) !== null) {
             $user->avatar = $path->store('avatars', 'public');
         }

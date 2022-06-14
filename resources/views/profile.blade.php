@@ -39,10 +39,10 @@
                             <div class="col-md-1">
                             </div>
                             <div class="col-md-2 text-center">
-                                <img id="avatar_image" src="{{asset('storage/'.$user->avatar)}}"
+                                <img id="avatar_image" src="{{auth()->user()->avatar ? asset('storage/'.auth()->user()->avatar) : "https://www.gravatar.com/avatar/" . md5( strtolower( trim( auth()->user()->email ) ) ) . "?s=" . 400}}"
                                      class="rounded-circle" style="width: 100%" alt="Profilbild"
                                      loading="lazy"/>
-                                <a class="btn btn-outline-secondary mt-2" id="upload" onclick="openDialog()">
+                                <a class="btn btn-outline-secondary mt-3" id="upload" onclick="openDialog()">
                                     <i class="fas fa-upload"></i>
                                     {{__('Bild hochladen')}}
                                 </a>

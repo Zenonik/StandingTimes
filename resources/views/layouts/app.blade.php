@@ -97,8 +97,8 @@
                                aria-expanded="false">
                                 <span style="margin-right: 1em"
                                       class="text-white-50">{{\Illuminate\Support\Facades\Auth::user()->name}}</span>
-                                <img src="{{asset('storage/'.auth()->user()->avatar)}}"
-                                     class="rounded-circle" height="25" alt="Black and White Portrait of a Man"
+                                <img src="{{auth()->user()->avatar ? asset('storage/'.auth()->user()->avatar) : "https://www.gravatar.com/avatar/" . md5( strtolower( trim( auth()->user()->email ) ) ) . "?s=" . 400}}"
+                                     class="rounded-circle" height="25"
                                      loading="lazy"/>
                             </a>
                             <ul
