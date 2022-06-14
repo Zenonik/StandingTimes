@@ -45,6 +45,18 @@
             filter: blur(8px);
             -webkit-filter: blur(8px);
         }
+
+        .circle {
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            -moz-border-radius: 50%;
+            border-radius: 50%;
+            border: solid 2px #B23CFD;
+            text-align: center;
+            display: block;
+            font-weight: bold;
+        }
     </style>
     @yield('js')
 </head>
