@@ -1,6 +1,6 @@
 <h1 align="center">StandingTimes</h1>
 
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/Zenonik/StandingTimes/master/public/img/logo.svg" width="400"></a></p>
+<p align="center"><img style="fill: white" src="https://raw.githubusercontent.com/Zenonik/StandingTimes/master/public/img/logo.svg" width="400"></p>
 
 ## About StandingTimes
 
