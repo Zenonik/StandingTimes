@@ -58,6 +58,8 @@
             font-weight: bold;
         }
     </style>
+
+    @livewireStyles
     @yield('js')
 </head>
 <body>
@@ -143,5 +145,6 @@
         @yield('content')
     </main>
 </div>
+@livewireScripts
 </body>
 </html>
