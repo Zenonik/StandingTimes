@@ -17,6 +17,7 @@ class CreateStandingTable extends Migration
             $table->id();
             $table->integer('user_id');
             $table->boolean('standing');
+            $table->string('standing_time');
             $table->timestamps();
         });
     }

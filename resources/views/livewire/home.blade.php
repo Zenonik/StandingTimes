@@ -11,7 +11,7 @@
                                 <div class="card-header" style="background-color: #1266F1"><i
                                         class="fa fa-clock"></i> {{ __('Zeit gestanden') }}</div>
                                 <div class="card-body" style="background-color: #3a3a3a">
-                                    <h1 class="text-center">{{ $time }}</h1>
+                                    <h1 class="text-center">{{ $thisUser['time'] }}</h1>
                                 </div>
                             </div>
                         </div>
@@ -20,16 +20,18 @@
                                 <div class="card-header" style="background-color: #B23CFD"><i
                                         class="fa fa-star"></i> {{ __('Top Ranking') }}</div>
                                 <div class="card-body" style="background-color: #3a3a3a">
-                                    @foreach($tops as $key => $top)
+                                    <?php $pos=1 ?>
+                                    @foreach($tops as $key => $item)
                                         <div class="row">
                                             <div class="col-md-2">
-                                                <span class="text-center circle">{{ $key }}</span>
+                                                <span class="text-center circle">{{ $pos }}</span>
+                                                <?php $pos++ ?>
                                             </div>
                                             <div class="col-md-7">
-                                                <h3 class="text-center">{{ $top }}</h3>
+                                                <h3 class="text-center">{{ $item['name'] }}</h3>
                                             </div>
-                                            <div class="col-md-3">
-                                                <h5 class="text-center">{{ $time }}</h5>
+                                            <div wire:poll.keep-alive class="col-md-3">
+                                                <h5 class="text-center">{{ $item['time'] }}</h5>
                                             </div>
                                         </div>
                                         <hr>
