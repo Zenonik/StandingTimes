@@ -20,8 +20,8 @@ class Home extends Component
             $this->thisUser = $this->list[Auth::id()] ?? null;
             $this->tops = $this->list->values()->take(10)->all();
         } else {
-            $this->thisUser = ['name' => Auth::user()->name, 'time' => gmdate('H:i:s', 0)];
-            $this->tops = [];
+            $this->thisUser = ['user' => Auth::user(), 'time' => gmdate('H:i:s', 0)];
+            $this->tops = $this->thisUser;
         }
 
         return view('livewire.home');
@@ -38,8 +38,9 @@ class Home extends Component
                 $time = date("H:i:s",$standing->where('standing', 0)->sum('standing_time')); // 1 Minute = 100 Seconds !!??
             }
             $this->list[$standing->first()->user_id] = [
-                'name' => User::where('id', $standing->first()->user_id)->get()->first()->name,
-                'time' => $time];
+                'user' => User::where('id', $standing->first()->user_id)->get()->first(),
+                'time' => $time,
+            ];
         });
         $this->list = collect($this->list)->sortByDesc('time');
     }
