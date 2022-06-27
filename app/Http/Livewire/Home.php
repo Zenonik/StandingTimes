@@ -8,13 +8,19 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use MongoDB\Driver\Session;
 
 class Home extends Component
 {
     public $list = [];
+    public $filter_time = 1;
+    public $start_date = null;
+    public $end_date = null;
+
 
     public function render()
     {
+        $this->list = [];
         $this->getTops();
         $this->tops = [];
         if (!empty($this->list->all())) {
@@ -26,7 +32,7 @@ class Home extends Component
                 $this->tops = $this->list->values()->take(10)->all();
             }
             else {
-                $this->thisUser = $this->list[Auth::id()] ?? null;
+                $this->thisUser = $this->list[Auth::user()->id] ?? null;
                 $this->tops = $this->list->values()->take(10)->all();
             }
         } else {
@@ -39,7 +45,26 @@ class Home extends Component
 
     public function getTops()
     {
-        Standing::whereDate('created_at', today())->orderBy('id', 'desc')->get()->groupBy('user_id')->each(function ($standing) {
+        $carbon = new Carbon();
+        if ($this->filter_time == 2){
+            $this->start_date = $carbon->startOfWeek();
+            $this->end_date = $carbon->endOfWeek();
+        }
+        elseif ($this->filter_time == 3){
+            $this->start_date = $carbon->startOfMonth();
+            $this->end_date = $carbon->endOfMonth();
+        }
+
+        if ($this->filter_time == 1){
+            $stand = Standing::whereDate('created_at', today())->orderBy('id', 'desc')->get()->groupBy('user_id');
+        }
+        elseif ($this->filter_time == 4){
+            $stand = Standing::orderBy('id', 'desc')->get()->groupBy('user_id');
+        }
+        else{
+            $stand = Standing::whereBetween('created_at', array($this->start_date, $this->end_date))->orderBy('id', 'desc')->get()->groupBy('user_id');
+        }
+        $stand->each(function ($standing) {
             $last_standing = $standing->where('standing', 1)->first();
             if ($standing->first()->standing == 1) {
                 $time = date("H:i:s",$standing->where('standing', 0)->sum('standing_time') + Carbon::now()->diffInSeconds($last_standing->created_at));
