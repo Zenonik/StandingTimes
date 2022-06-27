@@ -18,7 +18,7 @@ class Home extends Component
         $this->getTops();
         $this->tops = [];
         if (!empty($this->list->all())) {
-            if (!in_array(Auth::user()->id, array_column($this->list->all(), 'user_id'))) {
+            if (!in_array(Auth::user()->id, array_keys($this->list->all()))) {
                 $this->thisUser = [
                     'user' => Auth::user(),
                     'time' => gmdate('H:i:s', 0),
@@ -45,7 +45,7 @@ class Home extends Component
                 $time = date("H:i:s",$standing->where('standing', 0)->sum('standing_time') + Carbon::now()->diffInSeconds($last_standing->created_at));
             }
             else{
-                $time = date("H:i:s",$standing->where('standing', 0)->sum('standing_time')); // 1 Minute = 100 Seconds !!??
+                $time = date("H:i:s",$standing->where('standing', 0)->sum('standing_time'));
             }
             $this->list[$standing->first()->user_id] = [
                 'user' => User::where('id', $standing->first()->user_id)->get()->first(),
