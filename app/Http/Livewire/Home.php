@@ -16,12 +16,13 @@ class Home extends Component
     public function render()
     {
         $this->getTops();
+        $this->tops = [];
         if (!empty($this->list->all())) {
             $this->thisUser = $this->list[Auth::id()] ?? null;
             $this->tops = $this->list->values()->take(10)->all();
         } else {
             $this->thisUser = ['user' => Auth::user(), 'time' => gmdate('H:i:s', 0)];
-            $this->tops = $this->thisUser;
+            array_push($this->tops, $this->thisUser);
         }
 
         return view('livewire.home');
