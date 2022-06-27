@@ -18,8 +18,17 @@ class Home extends Component
         $this->getTops();
         $this->tops = [];
         if (!empty($this->list->all())) {
-            $this->thisUser = $this->list[Auth::id()] ?? null;
-            $this->tops = $this->list->values()->take(10)->all();
+            if (!in_array(Auth::user()->id, array_column($this->list->all(), 'user_id'))) {
+                $this->thisUser = [
+                    'user' => Auth::user(),
+                    'time' => gmdate('H:i:s', 0),
+                ];
+                $this->tops = $this->list->values()->take(10)->all();
+            }
+            else {
+                $this->thisUser = $this->list[Auth::id()] ?? null;
+                $this->tops = $this->list->values()->take(10)->all();
+            }
         } else {
             $this->thisUser = ['user' => Auth::user(), 'time' => gmdate('H:i:s', 0)];
             array_push($this->tops, $this->thisUser);
