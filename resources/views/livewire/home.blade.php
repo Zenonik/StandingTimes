@@ -12,6 +12,19 @@
                                 <option value="4">Insgesamt</option>
                             </select>
                         </div>
+                        @if($standing)
+                            <button onclick="changeState(false)" class="btn btn-danger btn-sm float-end"
+                                    style="margin-right: 10px" id="stand_button">
+                                @else
+                                    <button onclick="changeState(true)" class="btn btn-success btn-sm float-end"
+                                            style="margin-right: 10px" id="stand_button">
+                                        @endif
+                                        @if($standing)
+                                            {{__('Hinsetzen')}}
+                                        @else
+                                            {{__('Aufstehen')}}
+                                        @endif
+                                    </button>
                     </h5>
                 </div>
                 <div class="card-body">
@@ -32,12 +45,12 @@
                                 <div class="card-body" style="background-color: #3a3a3a">
                                     <?php $pos = 1 ?>
                                     @foreach($tops as $key => $item)
-                                            <?php
-                                            $array = false;
-                                            if (is_array($item['user'])) {
-                                                $array = true;
-                                            }
-                                            ?>
+                                        <?php
+                                        $array = false;
+                                        if (is_array($item['user'])) {
+                                            $array = true;
+                                        }
+                                        ?>
                                         <div class="row">
                                             <div class="col-md-2">
                                                 <span class="text-center circle">{{ $pos }}</span>
@@ -83,3 +96,22 @@
         </div>
     </div>
 </div>
+@push('scripts')
+    <script>
+        function changeState($std) {
+            $.ajax({
+                url: '{{ route('newEntryForUser') }}',
+                type: 'POST',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                    "key": "{{Auth::user()->api_token}}",
+                    "value": $std
+                },
+                dataType: 'json',
+                success: function (data) {
+                }
+            });
+        @this.set('standing', $std);
+        }
+    </script>
+@endpush

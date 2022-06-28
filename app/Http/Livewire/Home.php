@@ -5,8 +5,10 @@ namespace App\Http\Livewire;
 use App\Models\Standing;
 use App\Models\User;
 use Carbon\Carbon;
+use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Livewire\Component;
 use MongoDB\Driver\Session;
 
@@ -16,10 +18,13 @@ class Home extends Component
     public $filter_time = 1;
     public $start_date = null;
     public $end_date = null;
+    public $standing = false;
 
 
     public function render()
     {
+        $this->standing = Standing::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get()->first()->standing ?? 0;
+
         $this->list = [];
         $this->getTops();
         $this->tops = [];

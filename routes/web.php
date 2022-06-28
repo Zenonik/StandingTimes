@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/newEntry', [App\Http\Controllers\StandingController::class, 'newEntry'])->name('newEntryForUser');
+Route::post('/newEntry', [App\Http\Controllers\StandingController::class, 'newEntry'])->name('newEntryForUser');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('auth')->name('home');
 
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->middleware('auth')->name('profile');
