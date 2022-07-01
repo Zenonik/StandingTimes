@@ -26,7 +26,7 @@
                                          src="{{($user->avatar) ? asset('storage/'.($user->avatar)) : "https://www.gravatar.com/avatar/" . md5( strtolower( trim( $user->email ) ) ) . "?s=" . 400}}"
                                          class="rounded-circle" height="25"
                                          loading="lazy"/></td>
-                                <td>{{$user->name}}</td>
+                                <td>{{$user->name}}@if($user->admin) <i style="color: gold" class="fas fa-crown"></i> @endif</td>
                                 <td>{{$user->api_token}}</td>
                                 <td>
                                     @if($user->standing)
