@@ -27,7 +27,11 @@
                                          class="rounded-circle" height="25"
                                          loading="lazy"/></td>
                                 <td>{{$user->name}}@if($user->admin) <i style="color: gold" class="fas fa-crown"></i> @endif</td>
-                                <td>{{$user->api_token}}</td>
+                                <td>
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="replaceModalData('{{$user->api_token}}', '{{$user->name}}')" data-mdb-toggle="modal" data-mdb-target="#exampleModal">
+                                        Zeigen
+                                    </button>
+                                </td>
                                 <td>
                                     @if($user->standing)
                                         <i style="color: green" class="fas fa-check"></i>
@@ -59,6 +63,17 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">{{__('API Key')}} - <span id="apiTokeUsername">User</span></h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="text-align: center"><code id="apiText">...</code></div>
+        </div>
+    </div>
+</div>
 @push('scripts')
     <script>
         function changeState($std, $id) {
@@ -75,6 +90,11 @@
                 success: function (data) {
                 }
             });
+        }
+
+        function replaceModalData($token, $user){
+            $('#apiText').text($token);
+            $('#apiTokeUsername').text($user);
         }
     </script>
 @endpush
