@@ -6,6 +6,7 @@ use App\Models\Standing;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StandingController extends Controller
 {
@@ -14,11 +15,17 @@ class StandingController extends Controller
         if (empty(User::where('api_token', $request->key)->get()->all())) {
             return response('Key not found!');
         }
-        $user_id = User::where('api_token', $request->key)->get()->first()->id;
+        if ($request->has('user') && (Auth::user()->admin === 1)) {
+            $user_id = $request->get('user');
+        } else {
+            $user_id = User::where('api_token', $request->key)->get()->first()->id;
+        }
+
 
         if ($request->value == 'true') {
             $value = 1;
-        } elseif ($request->value == 'false') {
+        } elseif
+        ($request->value == 'false') {
             $value = 0;
         } else {
             return response('Value not found!');
@@ -31,12 +38,10 @@ class StandingController extends Controller
             }
             if ($value == 0) {
                 $standing_time = $current->created_at->diffInSeconds(now());
-            }
-            else {
+            } else {
                 $standing_time = 0;
             }
-        }
-        elseif (!isset($current) && $value == 0) {
+        } elseif (!isset($current) && $value == 0) {
             $standing_time = 0;
         }
 

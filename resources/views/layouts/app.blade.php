@@ -20,7 +20,9 @@
     <!-- MDB -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/4.1.0/mdb.min.js"></script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+            integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <style>
         body {
@@ -88,6 +90,12 @@
                             <a class="nav-link @if(route('home') === \Illuminate\Support\Facades\Request::url()) active @endif"
                                href="{{ route('home') }}">Dashboard</a>
                         </li>
+                        @if(\Illuminate\Support\Facades\Auth::user()->admin === 1)
+                            <li class="nav-item">
+                                <a class="nav-link @if(route('users') === \Illuminate\Support\Facades\Request::url()) active @endif"
+                                   href="{{ route('users') }}">Benutzer</a>
+                            </li>
+                        @endif
                     @endif
                 </ul>
 
@@ -124,7 +132,8 @@
                                     aria-labelledby="navbarDropdownMenuAvatar"
                             >
                                 <li>
-                                    <a class="dropdown-item" href="{{route('profile')}}"><i class="fas fa-user"></i> {{__('Profil')}}</a>
+                                    <a class="dropdown-item" href="{{route('profile')}}"><i
+                                                class="fas fa-user"></i> {{__('Profil')}}</a>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="{{ route('logout') }}"

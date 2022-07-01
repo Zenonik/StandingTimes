@@ -21,6 +21,7 @@ Auth::routes();
 
 Route::post('/newEntry', [App\Http\Controllers\StandingController::class, 'newEntry'])->name('newEntryForUser');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('auth')->name('home');
+Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->middleware('auth')->name('users');
 
 Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->middleware('auth')->name('profile');
 Route::post('/save_profile', [App\Http\Controllers\ProfileController::class, 'saveProfile'])->middleware('auth')->name('save_profile');
