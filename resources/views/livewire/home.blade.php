@@ -16,8 +16,8 @@
                             <button onclick="changeState(false)" class="btn btn-danger btn-sm float-end"
                                     style="margin-right: 10px" id="stand_button">
                                 @else
-                                    <button onclick="changeState(true)" class="btn btn-success btn-sm float-end"
-                                            style="margin-right: 10px" id="stand_button">
+                                    <button @if(!\Illuminate\Support\Facades\Auth::user()->deactivated) onclick="changeState(true)" @endif class="btn @if(\Illuminate\Support\Facades\Auth::user()->deactivated) btn-secondary @else btn-success @endif btn-sm float-end"
+                                            style="margin-right: 10px" id="stand_button" @if(\Illuminate\Support\Facades\Auth::user()->deactivated) disabled @endif>
                                         @endif
                                         @if($standing)
                                             {{__('Hinsetzen')}}

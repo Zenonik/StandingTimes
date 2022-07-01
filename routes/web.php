@@ -20,6 +20,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::post('/newEntry', [App\Http\Controllers\StandingController::class, 'newEntry'])->name('newEntryForUser');
+Route::post('/changeActive', [App\Http\Controllers\UserController::class, 'changeActive'])->name('changeActive');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->middleware('auth')->name('home');
 Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->middleware('auth')->name('users');
 

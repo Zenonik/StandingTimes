@@ -16,4 +16,16 @@ class UserController extends Controller
         }
         return view('users');
     }
+
+    public function changeActive(Request $request)
+    {
+        if (!Auth::user()->admin) {
+            return redirect('/');
+        }
+
+        $user = User::find($request->user);
+        $user->deactivated = $request->value;
+        $user->save();
+        return response('User ' . $user->id . ' is now ' . ($user->active ? 'active!' : 'inactive!'));
+    }
 }
