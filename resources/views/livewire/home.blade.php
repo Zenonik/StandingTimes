@@ -12,18 +12,11 @@
                                 <option value="4">Insgesamt</option>
                             </select>
                         </div>
-                        @if($standing)
-                            <button onclick="changeState(false)" class="btn btn-danger btn-sm float-end"
+
+
+                        <button @if(! auth()->user()->deactivated) wire:click="changeState" @endif class="btn btn-{{ $this->btnColor() }} btn-sm float-end"
                                     style="margin-right: 10px" id="stand_button">
-                                @else
-                                    <button @if(!\Illuminate\Support\Facades\Auth::user()->deactivated) onclick="changeState(true)" @endif class="btn @if(\Illuminate\Support\Facades\Auth::user()->deactivated) btn-secondary @else btn-success @endif btn-sm float-end"
-                                            style="margin-right: 10px" id="stand_button" @if(\Illuminate\Support\Facades\Auth::user()->deactivated) disabled @endif>
-                                        @endif
-                                        @if($standing)
-                                            {{__('Hinsetzen')}}
-                                        @else
-                                            {{__('Aufstehen')}}
-                                        @endif
+                            {{ $standing ? __('Hinsetzen') : __('Aufstehen') }}
                                     </button>
                     </h5>
                 </div>
@@ -96,22 +89,3 @@
         </div>
     </div>
 </div>
-@push('scripts')
-    <script>
-        function changeState($std) {
-            $.ajax({
-                url: '{{ route('newEntryForUser') }}',
-                type: 'POST',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                    "key": "{{Auth::user()->api_token}}",
-                    "value": $std
-                },
-                dataType: 'json',
-                success: function (data) {
-                }
-            });
-        @this.set('standing', $std);
-        }
-    </script>
-@endpush
