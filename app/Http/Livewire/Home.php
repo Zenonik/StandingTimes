@@ -33,6 +33,7 @@ class Home extends Component
                 $this->thisUser = [
                     'user' => Auth::user(),
                     'time' => gmdate('H:i:s', 0),
+                    'level' => 0,
                 ];
                 $this->tops = $this->list->values()->take(10)->all();
             }
@@ -41,10 +42,9 @@ class Home extends Component
                 $this->tops = $this->list->values()->take(10)->all();
             }
         } else {
-            $this->thisUser = ['user' => Auth::user(), 'time' => gmdate('H:i:s', 0)];
+            $this->thisUser = ['user' => Auth::user(), 'time' => gmdate('H:i:s', 0), 'level' => Standing::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get()->sum('standing_time')];
             array_push($this->tops, $this->thisUser);
         }
-
         return view('livewire.home');
     }
 
@@ -72,16 +72,17 @@ class Home extends Component
         $stand->each(function ($standing) {
             $last_standing = $standing->where('standing', 1)->first();
             if ($standing->first()->standing == 1) {
-                $time = date("H:i:s",$standing->where('standing', 0)->sum('standing_time') + Carbon::now()->diffInSeconds($last_standing->created_at));
+                $time = $standing->where('standing', 0)->sum('standing_time') + Carbon::now()->diffInSeconds($last_standing->created_at);
             }
             else{
-                $time = date("H:i:s",$standing->where('standing', 0)->sum('standing_time'));
+                $time = $standing->where('standing', 0)->sum('standing_time');
             }
             $this->list[$standing->first()->user_id] = [
                 'user' => User::where('id', $standing->first()->user_id)->get()->first(),
-                'time' => $time,
+                'time' => date("H:i:s", $time),
+                'level' => floor(($time%2592000)/86400),
             ];
         });
-        $this->list = collect($this->list)->sortByDesc('time');
+        $this->list = collect($this->list)->sortByDesc('time')->sortByDesc('level');
     }
 }
