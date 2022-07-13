@@ -68,7 +68,7 @@
                                                          class="rounded-circle" height="25"
                                                          loading="lazy"/>
                                                             <div class="fa-stack fa-2xs" style="position: relative; bottom: 20px; right: 25px; width: 35px; color: {{colors($item["level"])}}">
-                                                                <span class="fas fa-circle fa-stack-2x"
+                                                                <span class="fas fa-square fa-stack-2x"
                                                                       style="color: #262626"></span>
                                                                     <strong class="fa-stack-1x">
                                                                              {{$item["level"]}}
