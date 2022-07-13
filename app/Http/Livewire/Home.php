@@ -85,6 +85,11 @@ class Home extends Component
                 'level' => floor(($alltime%2592000)/86400),
             ];
         });
-        $this->list = collect($this->list)->sortByDesc('time')->sortByDesc('level');
+        if ($this->filter_time == 1){
+            $this->list = collect($this->list)->sortByDesc('time');
+        }
+        else{
+            $this->list = collect($this->list)->sortByDesc('time')->sortByDesc('level');
+        }
     }
 }
