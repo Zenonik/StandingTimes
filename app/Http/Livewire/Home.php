@@ -73,14 +73,16 @@ class Home extends Component
             $last_standing = $standing->where('standing', 1)->first();
             if ($standing->first()->standing == 1) {
                 $time = $standing->where('standing', 0)->sum('standing_time') + Carbon::now()->diffInSeconds($last_standing->created_at);
+                $alltime = Standing::where('user_id', $standing->first()->user_id)->where('standing', 0)->sum('standing_time') + Carbon::now()->diffInSeconds($last_standing->created_at);
             }
             else{
                 $time = $standing->where('standing', 0)->sum('standing_time');
+                $alltime = Standing::where('user_id', $standing->first()->user_id)->where('standing', 0)->sum('standing_time');
             }
             $this->list[$standing->first()->user_id] = [
                 'user' => User::where('id', $standing->first()->user_id)->get()->first(),
                 'time' => date("H:i:s", $time),
-                'level' => floor(($time%2592000)/86400),
+                'level' => floor(($alltime%2592000)/86400),
             ];
         });
         $this->list = collect($this->list)->sortByDesc('time')->sortByDesc('level');
