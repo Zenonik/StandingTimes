@@ -5,12 +5,8 @@ namespace App\Http\Livewire;
 use App\Models\Standing;
 use App\Models\User;
 use Carbon\Carbon;
-use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 use Livewire\Component;
-use MongoDB\Driver\Session;
 
 class Home extends Component
 {
@@ -23,7 +19,7 @@ class Home extends Component
 
     public function render()
     {
-        $this->standing = Standing::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get()->first()->standing ?? 0;
+        $this->standing = auth()->user()->isStanding();
 
         $this->list = [];
         $this->getTops();
@@ -91,5 +87,22 @@ class Home extends Component
         else{
             $this->list = collect($this->list)->sortByDesc('time')->sortByDesc('level');
         }
+    }
+
+    public function btnColor(): string
+    {
+        if (auth()->user()->deactivated) {
+            return 'secondary';
+        }
+        return $this->standing ? 'danger' : 'success';
+    }
+
+    public function changeState()
+    {
+        if ((auth()->user())->deactivated) {
+            return;
+        }
+
+        Standing::changeStandingFor(\auth()->id(), !$this->standing);
     }
 }
