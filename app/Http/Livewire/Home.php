@@ -38,7 +38,7 @@ class Home extends Component
                 $this->tops = $this->list->values()->take(10)->all();
             }
         } else {
-            $this->thisUser = ['user' => Auth::user(), 'time' => gmdate('H:i:s', 0), 'level' => Standing::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get()->sum('standing_time')];
+            $this->thisUser = ['user' => Auth::user(), 'time' => gmdate('H:i:s', 0), 'level' => number_format(Carbon::parse(Standing::where('user_id', Auth::user()->id)->orderBy('id', 'desc')->get()->sum('standing_time'))->format('H')/24 , 0)];
             array_push($this->tops, $this->thisUser);
         }
         return view('livewire.home');
